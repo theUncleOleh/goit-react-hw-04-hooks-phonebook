@@ -13,7 +13,11 @@ export default function ContactList({ contacts, onDeleteContact }) {
             <p className={s.graf}>
               {name}: {number}
             </p>
-            <button className={s.button} onClick={() => onDeleteContact(id)}>
+            <button
+              type="button"
+              onClick={onDeleteContact}
+              className={s.button}
+            >
               Delete
             </button>
           </li>

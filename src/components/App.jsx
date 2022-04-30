@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 // import FormByFormik from './Formik';
 import Form from './Form/Form';
 import ContactList from './ContactList';
-// import Filter from './Filter';
+import Filter from './Filter';
 import s from './App.module.css';
 
 // export default function App() {
@@ -11,13 +11,13 @@ import s from './App.module.css';
 // }
 
 export default function App() {
-  const [contacts, setContacts] = useState([]);
-  // const handleNameChange = event => {
-  //   setName(event.target.value);
-  // };
-  // const handleNumberChange = event => {
-  //   setNumber(event.target.value);
-  // };
+  const [contacts, setContacts] = useState([
+    { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+    { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+    { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+    { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+  ]);
+  const [filter, setFilter] = useState('');
 
   const addContacts = (name, number) => {
     const contact = {
@@ -25,20 +25,34 @@ export default function App() {
       name,
       number,
     };
-    console.log(contact);
-    setContacts(state => [...state, contact]);
+    return setContacts(contacts => [...contacts, contact]);
   };
 
-  const deleteContact = contactId => {
-    setContacts(state =>
-      state.contacts.filter(contact => contact.id !== contactId)
+  const deleteContact = id => {
+    setContacts(prevContacts =>
+      prevContacts.filter(contact => contact.id !== id)
     );
   };
+
+  const onChangeFilter = e => {
+    setFilter(e.currentTarget.value);
+  };
+
+  const getVisibleContact = () => {
+    const normalizeContact = filter.toLocaleLowerCase();
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizeContact)
+    );
+  };
+
+  const visibleContacts = getVisibleContact();
 
   return (
     <div className={s.container}>
       <Form onSubmit={addContacts} />
-      <ContactList contacts={contacts} onDeleteContact={deleteContact} />
+      <ContactList contacts={visibleContacts} onDeleteContact={deleteContact} />
+      <Filter value={filter} onChange={onChangeFilter} />
+      <span> Общее кол-во: {contacts.length}</span>
     </div>
   );
 }

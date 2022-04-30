@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import s from './Form.module.css';
 
+
 export default function Form({ onSubmit }) {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
@@ -29,6 +30,7 @@ export default function Form({ onSubmit }) {
       <label htmlFor="" className={s.label}>
         Name
         <input
+          autoComplete="off"
           className={s.input}
           type="text"
           name="name"
@@ -43,6 +45,7 @@ export default function Form({ onSubmit }) {
       <label htmlFor="" className={s.label}>
         Number
         <input
+          autoComplete="off"
           className={s.input}
           type="tel"
           name="number"

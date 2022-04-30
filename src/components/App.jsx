@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { nanoid } from 'nanoid';
 // import FormByFormik from './Formik';
 import Form from './Form/Form';
@@ -9,9 +9,39 @@ import s from './App.module.css';
 // export default function App() {
 //   return <FormByFormik />;
 // }
+// кастомный хук для localStorage
+const useLocalStorage = (key, defaultValue) => {
+  const [state, setState] = useState(() => {
+    return JSON.parse(window.localStorage.getItem(key)) ?? defaultValue;
+  });
+
+  useEffect(() => {
+    window.localStorage.setItem(key, JSON.stringify(state));
+  }, [key, state]);
+  return [state, setState];
+};
 
 export default function App() {
-  const [contacts, setContacts] = useState([
+  // используя isMounted проверяем замаунтился ли компонент и рендерим тоБ что localeStorage
+  // const isMounted = useRef(false);
+  // const [contacts, setContacts] = useState([
+  //   { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+  //   { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+  //   { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+  //   { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+  // ]);
+  // ленивая инециализация компонентов которая выполняется один раз
+  // const [contacts, setContacts] = useState(() => {
+  //   return (
+  //     JSON.parse(window.localStorage.getItem('contacts')) ?? [
+  //       { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+  //       { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+  //       { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+  //       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+  //     ]
+  //   );
+  // });
+  const [contacts, setContacts] = useLocalStorage('contacts', [
     { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
     { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
     { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
@@ -44,6 +74,26 @@ export default function App() {
       contact.name.toLowerCase().includes(normalizeContact)
     );
   };
+
+  // useEffect(() => {
+  //   const contacts = window.localStorage.getItem('contacts');
+  //   const parseContacts = JSON.parse(contacts);
+  //   if (parseContacts) {
+  //     setContacts(parseContacts);
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   console.log(isMounted);
+  //   if (isMounted) {
+  //     window.localStorage.setItem('contacts', JSON.stringify(contacts));
+  //   }
+  //   isMounted.current = true;
+  // }, [contacts]);
+
+  // useEffect(() => {
+  //   window.localStorage.setItem('contacts', JSON.stringify(contacts));
+  // }, [contacts]);
 
   const visibleContacts = getVisibleContact();
 

@@ -23,7 +23,6 @@ export default function Form({ onSubmit }) {
   const handleSubmit = event => {
     event.preventDefault();
     onSubmit(name, number);
-    console.log(name, number);
   };
   return (
     <form onSubmit={handleSubmit} className={s.form}>

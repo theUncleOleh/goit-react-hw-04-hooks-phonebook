@@ -100,8 +100,9 @@ export default function App() {
   return (
     <div className={s.container}>
       <Form onSubmit={addContacts} />
-      <ContactList contacts={visibleContacts} onDeleteContact={deleteContact} />
       <Filter value={filter} onChange={onChangeFilter} />
+      <ContactList contacts={visibleContacts} onDeleteContact={deleteContact} />
+
       <span> Общее кол-во: {contacts.length}</span>
     </div>
   );

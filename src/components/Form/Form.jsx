@@ -23,6 +23,11 @@ export default function Form({ onSubmit }) {
   const handleSubmit = event => {
     event.preventDefault();
     onSubmit(name, number);
+    reset();
+  };
+  const reset = () => {
+    setName('');
+    setNumber('');
   };
   return (
     <form onSubmit={handleSubmit} className={s.form}>
